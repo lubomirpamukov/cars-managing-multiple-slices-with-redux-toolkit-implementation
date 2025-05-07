@@ -18,7 +18,6 @@ function CarForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(addCar({name, cost}))
-    console.log(`Car submited ${addCar({name,cost})}`)
   }
 
   return (
