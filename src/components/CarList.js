@@ -13,17 +13,16 @@ const memorizedCars2 = createSelector(
 
 function CarList() {
   const dispatch = useDispatch();
-
-  
-
   const cars = useSelector(memorizedCars2);
+  const name = useSelector((state) => state.form.name);
 
   const handleCarDelete = (car) => {
     dispatch(removeCar(car.id));
   };
   const renderedCars = cars.map((car) => {
+    const bold = name && car.name.toLowerCase().includes(name.toLowerCase())
     return (
-      <div className="panel" key={car.id}>
+      <div className={`panel ${bold && 'bold'}`} key={car.id}>
         <p>
           {car.name} - ${car.cost}
         </p>
