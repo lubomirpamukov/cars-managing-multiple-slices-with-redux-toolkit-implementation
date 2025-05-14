@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
 import { removeCar } from "../store";
+import CarValue from "./CarValue";
+
+const memorizedCars2 = createSelector(
+  [(state) => state.cars.collection, (state) => state.cars.searchTerm],
+  (collection, searchTerm) =>
+    collection.filter((car) =>
+      car.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+);
+
 function CarList() {
   const dispatch = useDispatch();
-  
 
-  const memorizedCars2 = createSelector(
-    [(state) => state.cars.collection, (state) => state.cars.searchTerm],
-    (collection, searchTerm) =>
-      collection.filter((car) =>
-        car.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  );
+  
 
   const cars = useSelector(memorizedCars2);
 
@@ -37,6 +40,7 @@ function CarList() {
     <div className="car-list">
       {renderedCars}
       <hr />
+      <CarValue />
     </div>
   );
 }
