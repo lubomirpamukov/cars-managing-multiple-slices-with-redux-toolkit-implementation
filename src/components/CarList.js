@@ -1,14 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeCar } from '../store'
+import { createSelector } from "@reduxjs/toolkit";
+import { removeCar } from "../store";
 function CarList() {
-    const dispatch = useDispatch()
-  const cars = useSelector((state) => {
-    return state.cars.collection;
-  });
+  const dispatch = useDispatch();
+  
+
+  const memorizedCars2 = createSelector(
+    [(state) => state.cars.collection, (state) => state.cars.searchTerm],
+    (collection, searchTerm) =>
+      collection.filter((car) =>
+        car.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+  );
+
+  const cars = useSelector(memorizedCars2);
 
   const handleCarDelete = (car) => {
-    dispatch(removeCar(car.id))
-  }
+    dispatch(removeCar(car.id));
+  };
   const renderedCars = cars.map((car) => {
     return (
       <div className="panel" key={car.id}>
@@ -24,11 +33,12 @@ function CarList() {
       </div>
     );
   });
-  return <div className="car-list">
-    {renderedCars}
-    <hr />
-
-  </div>
+  return (
+    <div className="car-list">
+      {renderedCars}
+      <hr />
+    </div>
+  );
 }
 
 export default CarList;
